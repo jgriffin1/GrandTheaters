@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unga Bunga Movie Page</title>
+    <style>
+        :root {
+            --bg-color: white;
+            --text-color: black;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.4s, color 0.4s;
+        }
+
+        .main-text {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .sub-text {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+        }
+
+        /* Toggle container */
+        .toggle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 60px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #ddd;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: background 0.4s;
+        }
+
+        .slider::before {
+            content: "🌞";
+            position: absolute;
+            height: 50px;
+            width: 50px;
+            left: 5px;
+            top: 5px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.4s, content 0.4s;
+        }
+
+        input:checked + .slider {
+            background: #333;
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(60px);
+            content: "🌙";
+        }
+
+        .label {
+            font-size: 1em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-text">Unga bunga it moovee time</div>
+
+    <div class="sub-text">
+        call Trevor at <a href="https://youtu.be/dQw4w9WgXcQ?si=M_oTXja0paKxcQOz" target="_blank"> Click to Reveal Phone Number</a> for movie times. He'll probs help
+    </div>
+
+    <div class="toggle-wrapper">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+        </label>
+        <div class="label">Toggle Dark Mode</div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+
+        function setTheme(isDark) {
+            if (isDark) {
+                document.documentElement.style.setProperty('--bg-color', 'black');
+                document.documentElement.style.setProperty('--text-color', 'white');
+            } else {
+                document.documentElement.style.setProperty('--bg-color', 'white');
+                document.documentElement.style.setProperty('--text-color', 'black');
+            }
+        }
+
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Initial load
+        setTheme(prefersDark.matches);
+        toggle.checked = prefersDark.matches;
+
+        // Manual toggle
+        toggle.addEventListener('change', () => {
+            setTheme(toggle.checked);
+        });
+
+        // Respond to system changes
+        prefersDark.addEventListener('change', (e) => {
+            setTheme(e.matches);
+            toggle.checked = e.matches;
+        });
+    </script>
+
+</body>
+</html>
