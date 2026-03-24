@@ -33,20 +33,8 @@ body {
 }
 
 /* TEXT */
-.main-text {
-    font-size: 3em;
-    animation: wobble 1s infinite alternate;
-}
-
-@keyframes wobble {
-    from { transform: rotate(-2deg); }
-    to { transform: rotate(2deg); }
-}
-
-.sub-text {
-    font-size: 1.5em;
-    margin: 20px;
-}
+.main-text { font-size: 3em; }
+.sub-text { font-size: 1.5em; margin: 20px; }
 
 /* TOGGLE */
 .switch {
@@ -55,7 +43,6 @@ body {
     position: relative;
     z-index: 10;
 }
-
 .switch input { display: none; }
 
 .slider {
@@ -91,14 +78,23 @@ input:checked + .slider::before {
     position: absolute;
     width: 120px;
     height: 60px;
-    font-weight: bold;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 10px;
     pointer-events: none;
     mix-blend-mode: difference;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ensure DVD text always visible */
+#dvd span {
+    font-weight: 900;
+    font-size: 26px;
+    color: white;
+    text-shadow: 
+        0 0 5px black,
+        0 0 10px black,
+        0 0 20px black;
 }
 
 /* TRAIL */
@@ -107,13 +103,13 @@ input:checked + .slider::before {
     width: 120px;
     height: 60px;
     border-radius: 10px;
-    opacity: 0.4;
+    opacity: 0.35;
     pointer-events: none;
-    animation: fadeTrail 1s linear forwards;
+    animation: fadeTrail 0.8s linear forwards;
 }
 
 @keyframes fadeTrail {
-    to { opacity: 0; transform: scale(0.8); }
+    to { opacity: 0; transform: scale(0.7); }
 }
 
 /* EXPLOSION */
@@ -147,12 +143,12 @@ input:checked + .slider::before {
     <span class="slider"></span>
 </label>
 
-<div id="dvd">DVD</div>
+<div id="dvd"><span>DVD</span></div>
 
 <script>
 const toggle = document.getElementById('themeToggle');
 
-/* 🎨 THEME */
+/* THEME */
 function setTheme(isDark) {
     if (isDark) {
         document.documentElement.style.setProperty('--bg1', '#0f2027');
@@ -169,20 +165,17 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 setTheme(prefersDark.matches);
 toggle.checked = prefersDark.matches;
 
-toggle.addEventListener('change', () => {
-    setTheme(toggle.checked);
-});
-
-prefersDark.addEventListener('change', (e) => {
+toggle.addEventListener('change', () => setTheme(toggle.checked));
+prefersDark.addEventListener('change', e => {
     setTheme(e.matches);
     toggle.checked = e.matches;
 });
 
-/* DVD */
+/* DVD LOGIC */
 const dvd = document.getElementById('dvd');
 
 let x = 100, y = 100;
-let dx = 2, dy = 2;
+let dx = 4, dy = 4; // faster base speed
 let speedMultiplier = 1;
 
 function randomColor(dark) {
@@ -193,6 +186,7 @@ function randomColor(dark) {
 
 dvd.style.background = randomColor(toggle.checked);
 
+/* TRAIL */
 function createTrail() {
     const t = document.createElement('div');
     t.className = 'trail';
@@ -200,9 +194,10 @@ function createTrail() {
     t.style.top = y + 'px';
     t.style.background = randomColor(toggle.checked);
     document.body.appendChild(t);
-    setTimeout(() => t.remove(), 1000);
+    setTimeout(() => t.remove(), 800);
 }
 
+/* EXPLOSION */
 function explode(x, y) {
     for (let i = 0; i < 20; i++) {
         const e = document.createElement('div');
@@ -215,6 +210,33 @@ function explode(x, y) {
     }
 }
 
+/* 🧠 LESS FREQUENT RANDOMNESS */
+setInterval(() => {
+    dx = (Math.random() * 6 - 3);
+    dy = (Math.random() * 6 - 3);
+}, 8000); // slower changes
+
+/* 🎯 CORNER TARGET */
+setInterval(() => {
+    const width = window.innerWidth - dvd.offsetWidth;
+    const height = window.innerHeight - dvd.offsetHeight;
+
+    const corners = [
+        {x:0,y:0},
+        {x:width,y:0},
+        {x:0,y:height},
+        {x:width,y:height}
+    ];
+
+    const target = corners[Math.floor(Math.random()*corners.length)];
+    const angle = Math.atan2(target.y - y, target.x - x);
+
+    dx = Math.cos(angle) * 7;
+    dy = Math.sin(angle) * 7;
+
+}, 60000);
+
+/* ANIMATION */
 function animateDVD() {
     const width = window.innerWidth - dvd.offsetWidth;
     const height = window.innerHeight - dvd.offsetHeight;
@@ -235,11 +257,8 @@ function animateDVD() {
         hitY = true;
     }
 
-    // 🎯 PERFECT CORNER HIT
     if (hitX && hitY) {
-        if (Math.random() < 0.3) { // rare-ish
-            explode(x, y);
-        }
+        if (Math.random() < 0.3) explode(x, y);
     }
 
     if (hitX || hitY) {
@@ -251,8 +270,7 @@ function animateDVD() {
 
     createTrail();
 
-    // ⚡ SPEED UP OVER TIME
-    speedMultiplier += 0.0005;
+    speedMultiplier += 0.001; // faster acceleration
 
     requestAnimationFrame(animateDVD);
 }
