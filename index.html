@@ -1,143 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Unga Bunga Movie Page</title>
-    <style>
-        :root {
-            --bg-color: white;
-            --text-color: black;
-        }
+<meta charset="UTF-8">
+<title>Unga Bunga Movie Page</title>
 
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.4s, color 0.4s;
-        }
+<style>
+:root {
+    --bg1: #ff9a9e;
+    --bg2: #fad0c4;
+    --text-color: black;
+}
 
-        .main-text {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Comic Sans MS, cursive, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(270deg, var(--bg1), var(--bg2), cyan, magenta, yellow);
+    background-size: 1000% 1000%;
+    animation: rainbowBG 12s ease infinite;
+    color: var(--text-color);
+}
 
-        .sub-text {
-            font-size: 1.3em;
-            margin-bottom: 40px;
-        }
+/* 🌈 BG animation */
+@keyframes rainbowBG {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
 
-        /* Toggle container */
-        .toggle-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+/* 💥 TEXT CHAOS */
+.main-text {
+    font-size: 3em;
+    text-transform: uppercase;
+    animation: wobble 1s infinite alternate, glow 0.6s infinite alternate;
+    cursor: pointer;
+}
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 120px;
-            height: 60px;
-        }
+@keyframes wobble {
+    from { transform: rotate(-2deg) scale(1); }
+    to { transform: rotate(2deg) scale(1.1); }
+}
 
-        .switch input {
-            display: none;
-        }
+@keyframes glow {
+    from { text-shadow: 0 0 10px white; }
+    to { text-shadow: 0 0 30px hotpink, 0 0 50px cyan; }
+}
 
-        .slider {
-            position: absolute;
-            inset: 0;
-            background: #ddd;
-            border-radius: 60px;
-            cursor: pointer;
-            transition: background 0.4s;
-        }
+.sub-text {
+    font-size: 1.5em;
+    margin: 20px;
+    animation: floaty 3s ease-in-out infinite;
+}
 
-        .slider::before {
-            content: "🌞";
-            position: absolute;
-            height: 50px;
-            width: 50px;
-            left: 5px;
-            top: 5px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            transition: transform 0.4s, content 0.4s;
-        }
+@keyframes floaty {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
 
-        input:checked + .slider {
-            background: #333;
-        }
+a {
+    color: yellow;
+    font-weight: bold;
+    text-decoration: none;
+}
 
-        input:checked + .slider::before {
-            transform: translateX(60px);
-            content: "🌙";
-        }
+a:hover {
+    transform: scale(1.3) rotate(10deg);
+}
 
-        .label {
-            font-size: 1em;
-            opacity: 0.7;
-        }
-    </style>
+/* 🔘 TOGGLE */
+.switch {
+    width: 120px;
+    height: 60px;
+    position: relative;
+    z-index: 10;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: black;
+    border-radius: 60px;
+    cursor: pointer;
+}
+
+.slider::before {
+    content: "🌞";
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    left: 5px;
+    top: 5px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s;
+}
+
+input:checked + .slider::before {
+    transform: translateX(60px) rotate(360deg);
+    content: "🌙";
+}
+
+/* 📀 DVD LOGO */
+#dvd {
+    position: absolute;
+    width: 120px;
+    height: 60px;
+    font-weight: bold;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+/* 🌴 floating emoji */
+.emoji {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatEmoji linear infinite;
+}
+
+@keyframes floatEmoji {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="main-text">Unga bunga it moovee time</div>
+<div class="main-text">UNGA BUNGA IT MOOVEE TIME</div>
 
-    <div class="sub-text">
-        call Trevor at <a href="https://youtu.be/dQw4w9WgXcQ?si=M_oTXja0paKxcQOz" target="_blank"> Click to Reveal Phone Number</a> for movie times. He'll probs help
-    </div>
+<div class="sub-text">
+    call Trevor at 
+    <a href="https://youtu.be/dQw4w9WgXcQ?si=M_oTXja0paKxcQOz" target="_blank">
+        Click to Reveal Phone Number
+    </a>
+    for movie times. He'll probs help
+</div>
 
-    <div class="toggle-wrapper">
-        <label class="switch">
-            <input type="checkbox" id="themeToggle">
-            <span class="slider"></span>
-        </label>
-        <div class="label">Toggle Dark Mode</div>
-    </div>
+<label class="switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider"></span>
+</label>
 
-    <script>
-        const toggle = document.getElementById('themeToggle');
+<div id="dvd">DVD</div>
 
-        function setTheme(isDark) {
-            if (isDark) {
-                document.documentElement.style.setProperty('--bg-color', 'black');
-                document.documentElement.style.setProperty('--text-color', 'white');
-            } else {
-                document.documentElement.style.setProperty('--bg-color', 'white');
-                document.documentElement.style.setProperty('--text-color', 'black');
-            }
-        }
+<script>
+const toggle = document.getElementById('themeToggle');
 
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+/* 🎨 COLOR MODES */
+function setTheme(isDark) {
+    if (isDark) {
+        document.documentElement.style.setProperty('--bg1', '#0f2027');
+        document.documentElement.style.setProperty('--bg2', '#203a43');
+        document.documentElement.style.setProperty('--text-color', 'white');
+    } else {
+        document.documentElement.style.setProperty('--bg1', '#ff9a9e');
+        document.documentElement.style.setProperty('--bg2', '#fad0c4');
+        document.documentElement.style.setProperty('--text-color', 'black');
+    }
+}
 
-        // Initial load
-        setTheme(prefersDark.matches);
-        toggle.checked = prefersDark.matches;
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+setTheme(prefersDark.matches);
+toggle.checked = prefersDark.matches;
 
-        // Manual toggle
-        toggle.addEventListener('change', () => {
-            setTheme(toggle.checked);
-        });
+toggle.addEventListener('change', () => {
+    setTheme(toggle.checked);
+});
 
-        // Respond to system changes
-        prefersDark.addEventListener('change', (e) => {
-            setTheme(e.matches);
-            toggle.checked = e.matches;
-        });
-    </script>
+prefersDark.addEventListener('change', (e) => {
+    setTheme(e.matches);
+    toggle.checked = e.matches;
+});
+
+/* 📀 DVD BOUNCE */
+const dvd = document.getElementById('dvd');
+let x = 100, y = 100;
+let dx = 2, dy = 2;
+
+function randomColor(darkMode) {
+    if (darkMode) {
+        return `hsl(${Math.random()*360}, 80%, 40%)`; // darker
+    } else {
+        return `hsl(${Math.random()*360}, 100%, 60%)`; // bright
+    }
+}
+
+dvd.style.background = randomColor(toggle.checked);
+
+function animateDVD() {
+    const width = window.innerWidth - dvd.offsetWidth;
+    const height = window.innerHeight - dvd.offsetHeight;
+
+    x += dx;
+    y += dy;
+
+    let hit = false;
+
+    if (x <= 0 || x >= width) {
+        dx *= -1;
+        hit = true;
+    }
+    if (y <= 0 || y >= height) {
+        dy *= -1;
+        hit = true;
+    }
+
+    if (hit) {
+        dvd.style.background = randomColor(toggle.checked);
+    }
+
+    dvd.style.left = x + 'px';
+    dvd.style.top = y + 'px';
+
+    requestAnimationFrame(animateDVD);
+}
+
+animateDVD();
+
+/* 🌴 emoji chaos */
+setInterval(() => {
+    const e = document.createElement('div');
+    e.className = 'emoji';
+    e.innerText = ['🌴','🦍','🎬','🍿'][Math.floor(Math.random()*4)];
+    e.style.left = Math.random()*100 + 'vw';
+    e.style.animationDuration = (Math.random()*5+5) + 's';
+    document.body.appendChild(e);
+
+    setTimeout(() => e.remove(), 10000);
+}, 500);
+
+</script>
 
 </body>
 </html>
